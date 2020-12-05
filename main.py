@@ -1,16 +1,10 @@
 from flask import Flask, jsonify, request
-from dotenv import load_dotenv
-import os
 from routes import getRoutes
-import airqual import cost
+from airqual import cost
 
 
 app = Flask(__name__)
-load_dotenv()
 
-IQAIR_API_KEY = os.getenv("IQAIR_API_KEY")
-DIRECTIONS_API_KEY = os.getenv("DIRECTIONS_API_KEY")
-MAPS_API_KEY = os.getenv("MAPS_API_KEY")
 
 @app.route('/')
 def index():
@@ -25,5 +19,12 @@ def airquality():
     latlng = getRoutes(origin, destination)
     costs = cost(latlng)
     return jsonify(airqual_costs=costs)
+
+@app.route('/test')
+def test():
+    latlng = getRoutes('ChIJpTvG15DL1IkRd8S0KlBVNTI','ChIJDbdkHFQayUwR7-8fITgxTmU')
+    costs = cost(latlng)
+    print(costs)
+    return 'done'
 
 # print("don't go outside")
