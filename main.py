@@ -15,4 +15,9 @@ def index():
     return 'index'
 
 
+@app.route('/airquality')
+def airquality():
+    #call some function
+    return None
+
 # print("don't go outside")
