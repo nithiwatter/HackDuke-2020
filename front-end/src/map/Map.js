@@ -128,6 +128,7 @@ export default function Map() {
   return (
     <MyMapContext.Provider
       value={{
+        markers,
         setMarkers,
         handleSetMarker,
         myCenter,

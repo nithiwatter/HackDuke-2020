@@ -6,12 +6,14 @@ import {
   IconButton,
   Tooltip,
   makeStyles,
+  Typography,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import CloseIcon from "@material-ui/icons/Close";
 import DirectionsIcon from "@material-ui/icons/Directions";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
+import green from "@material-ui/core/colors/green";
 
 import MyMapContext from "../MyMapContext";
 
@@ -32,6 +34,12 @@ const useStyles = makeStyles((theme) => ({
   divider: {
     height: 28,
     margin: 4,
+  },
+  textContainer: {
+    padding: theme.spacing(1),
+  },
+  text: {
+    color: green[500],
   },
 }));
 
@@ -105,6 +113,15 @@ export default function SearchMapInputBase({
           <DeleteSweepIcon />
         </IconButton>
       </Tooltip>
+
+      <Divider className={classes.divider} orientation="vertical" />
+      <div className={classes.textContainer}>
+        <Typography
+          variant="body2"
+          style={{ fontWeight: "bold" }}
+          className={functionUtils.markers.length === 2 ? classes.text : null}
+        >{`${functionUtils.markers.length} markers selected`}</Typography>
+      </div>
     </Paper>
   );
 }
