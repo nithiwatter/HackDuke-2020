@@ -7,10 +7,11 @@ load_dotenv()
 
 
 IQAIR_API_KEY = os.getenv("IQAIR_API_KEY")
+DIRECTIONS_API_KEY = os.getenv("DIRECTIONS_API_KEY")
+MAPS_API_KEY = os.getenv("MAPS_API_KEY")
 
 @app.route('/')
 def index():
-    print(IQAIR_API_KEY)
     return 'index'
 
 
