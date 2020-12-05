@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from dotenv import load_dotenv
 import os
 from routes import getRoutes
-import airqual import cost
+from airqual import cost
 
 
 app = Flask(__name__)
