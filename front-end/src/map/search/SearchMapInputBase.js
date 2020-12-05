@@ -97,7 +97,10 @@ export default function SearchMapInputBase({
         <IconButton
           color="primary"
           className={classes.iconButton}
-          onClick={() => functionUtils.setMarkers([])}
+          onClick={() => {
+            functionUtils.setMarkers([]);
+            functionUtils.setSelectedLocation(null);
+          }}
         >
           <DeleteSweepIcon />
         </IconButton>

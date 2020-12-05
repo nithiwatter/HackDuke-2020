@@ -78,6 +78,11 @@ export default function Map() {
   };
 
   const handleSetMarker = (marker) => {
+    if (
+      markers.find((m) => m.lat === marker.lat && m.lng === marker.lng) !==
+      undefined
+    )
+      return;
     if (markers.length === 2)
       return openSnackbarExternal({
         severity: "error",
@@ -89,6 +94,11 @@ export default function Map() {
   };
 
   const handleSetCurrentLocationMarker = (marker) => {
+    if (
+      markers.find((m) => m.lat === marker.lat && m.lng === marker.lng) !==
+      undefined
+    )
+      return;
     if (markers.length === 2)
       return openSnackbarExternal({
         severity: "error",
@@ -142,7 +152,13 @@ export default function Map() {
               <Marker
                 key={`${marker.lat}-${marker.lng}`}
                 position={{ lat: marker.lat, lng: marker.lng }}
-                onMouseOver={() => setSelectedLocation(marker)}
+                onMouseOver={() => {
+                  if (selectedLocation === marker) return;
+                  if (selectedLocation !== null) {
+                    setSelectedLocation(null);
+                  }
+                  setSelectedLocation(marker);
+                }}
               />
             ))}
             {selectedLocation ? (
