@@ -111,7 +111,7 @@ export default function MyInfoBox({ marker }) {
 
   return (
     <Card onMouseLeave={() => functionUtils.setSelectedLocation(null)}>
-      {details.photos.length !== 0 ? (
+      {details.photos && details.photos.length !== 0 ? (
         <CardMedia
           component="img"
           src={details.photos[0].getUrl()}
