@@ -4,18 +4,26 @@ from math import radians
 from time import sleep
 
 import requests
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
+IQAIR_API_KEY = os.getenv("IQAIR_API_KEY")
 # from main import IQAIR_API_KEY
 
 def get_aq(lat, long):
-    return 5
     slat = str(lat)
     slong = str(long)
 
     url = "http://api.airvisual.com/v2/nearest_city?lat=" + slat + "&lon=" + slong + "&key=" + IQAIR_API_KEY
-    response = requests.get(url);
+    response = requests.get(url)
+
+    if(response.json()["status"] == 'fail'):
+        return -1
+
     airqual = response.json()["data"]["current"]["pollution"]["aqius"]
 
-    # return airqual
+    return airqual
 
 def get_other_shit(lat, long):
     return 5
@@ -26,11 +34,11 @@ def cost(lats_longs, funcs, weights, km_per=10):
     for lat_long in lats_longs:
         polsum = np.zeros(len(funcs))
         for i in range(len(lat_long) - 1):
-            distance = haversine((lat_long[i][0], lat_long[i][1]), (lat_long[i+1][0], lat_long[i+1][1]))
+            distance = haversine((lat_long[i]['lat'], lat_long[i]['lng']), (lat_long[i+1]['lat'], lat_long[i+1]['lng']))
             pts = int(np.floor(distance / km_per))
             if pts < 2: pts = 2
-            lats = np.linspace(lat_long[i][0], lat_long[i][0], pts)
-            longs = np.linspace(lat_long[i][1], lat_long[i][1], pts)
+            lats = np.linspace(lat_long[i]['lat'], lat_long[i]['lat'], pts)
+            longs = np.linspace(lat_long[i]['lng'], lat_long[i]['lng'], pts)
             polsum_local = np.zeros(len(funcs))
             last_add = 0
             for j in range(len(lats)):
@@ -58,4 +66,4 @@ def cost(lats_longs, funcs, weights, km_per=10):
     real_costs = np.matmul(costs, weights)
     return real_costs.tolist().index(min(real_costs))
 
-print(cost(np.array([[[0, 0], [1, 1]], [[0, 0], [1, 0], [1, 1]]]), np.array([get_aq, get_other_shit]), np.array([0.5, 0.5])))
+# print(cost(np.array([[[0, 0], [1, 1]], [[0, 0], [1, 0], [1, 1]]]), np.array([get_aq, get_other_shit]), np.array([0.5, 0.5])))
