@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from routes import getRoutes
-from airqual import cost
+from test import get_aq, cost
 
 
 app = Flask(__name__)
@@ -17,13 +17,14 @@ def airquality():
     origin = req[0]['place_id']
     destination = req[1]['place_id']
     latlng = getRoutes(origin, destination)
-    costs = cost(latlng)
+    costs = cost(latlng, [get_aq], [1])
     return jsonify(airqual_costs=costs)
 
 @app.route('/test')
 def test():
     latlng = getRoutes('ChIJpTvG15DL1IkRd8S0KlBVNTI','ChIJDbdkHFQayUwR7-8fITgxTmU')
-    costs = cost(latlng)
+    # print(latlng)
+    costs = cost(latlng,[get_aq],[1])
     print(costs)
     return 'done'
 

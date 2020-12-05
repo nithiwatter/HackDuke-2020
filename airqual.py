@@ -17,6 +17,10 @@ def get_aq(lat, long):
 
     url = "http://api.airvisual.com/v2/nearest_city?lat=" + slat + "&lon=" + slong + "&key=" + IQAIR_API_KEY
     response = requests.get(url)
+
+    if(response.json()["status"] == 'fail'):
+        return -1
+
     airqual = response.json()["data"]["current"]["pollution"]["aqius"]
 
     return airqual
