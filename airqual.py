@@ -27,7 +27,7 @@ def cost(lat_long, km_per=1):
         longs = np.linspace(lat_long[i][1], lat_long[i][1], pts)
         polsum_local = 0
         for j in range(len(lats)):
-            added_v = get_aq(radians(lats[j]), radians(longs[j])) * distance / pts
+            added_v = get_aq(lats[j], longs[j]) * distance / pts
             if j == 0 or j == len(lats) - 1: added_v = added_v / 2.0
             polsum_local = polsum_local + added_v
             sleep(0.1)
