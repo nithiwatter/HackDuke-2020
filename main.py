@@ -1,0 +1,1 @@
+print("don't go outside")
