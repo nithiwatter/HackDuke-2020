@@ -13,7 +13,7 @@ def getRoutes(origin, destination):
 
     latlng = []
     legs=[]
-    data = requests.get("https://maps.googleapis.com/maps/api/directions/json?origin=place_id:{}&destination=place_id{}&alternatives=true&key={}".format(origin,destination,DIRECTIONS_API_KEY))
+    data = requests.get("https://maps.googleapis.com/maps/api/directions/json?origin=place_id:{}&destination=place_id:{}&alternatives=true&key={}".format(origin,destination,DIRECTIONS_API_KEY))
     data = data.json()["routes"]
 
     for i in data:
@@ -23,10 +23,10 @@ def getRoutes(origin, destination):
     for j in legs:
         new_list = [k["end_location"] for k in j]
         latlng.append(new_list)
-
+        
     return latlng
 
 # if __name__ == "__main__":
-#     getRoutes()
+#     getRoutes('ChIJpTvG15DL1IkRd8S0KlBVNTI','ChIJDbdkHFQayUwR7-8fITgxTmU')
 
 

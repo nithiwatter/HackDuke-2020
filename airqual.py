@@ -4,7 +4,11 @@ from math import radians
 from time import sleep
 
 import requests
-from main import IQAIR_API_KEY
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
+IQAIR_API_KEY = os.getenv("IQAIR_API_KEY")
 
 
 def get_aq(lat, long):
