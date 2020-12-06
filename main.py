@@ -33,11 +33,13 @@ def test():
 
 @app.route('/test2')
 def test2():
+    print('start')
     G = make_G(get_coords(getAddresses()))
     G_prime = make_G_prime(getData(), G)
     W = make_W(G_prime)
     D = make_D(W)
     L = make_L(D, W)
+    print('start making clusters')
     print(make_clusters(L))
     return 'done'
     # G = make_G(lat_long)
