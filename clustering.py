@@ -91,11 +91,10 @@ def make_G_prime_prime(students, G, lat_long, school):
 
     return G
 
+def make_W(G, alpha=1):
+    W = np.exp(-np.power(G, 2) / alpha)
 
-# def make_W(G, alpha=1):
-#     W = np.exp(-np.power(G, 2) / alpha)
-#
-#     return W
+    return W
 #
 # def make_D(W):
 #     D = np.zeros([len(W), len(W)])

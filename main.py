@@ -40,7 +40,8 @@ def test2():
     latlng = get_coords(getAddresses())
     G = make_G(latlng)
     G_prime = make_G_prime(getData(), G)
-    cluster = spectral_clustering(G_prime, n_clusters=int(len(G_prime) / 3))
+    W = make_W(G_prime)
+    cluster = spectral_clustering(W, n_clusters=int(len(G_prime) / 3))
 
     output = dict()
 
