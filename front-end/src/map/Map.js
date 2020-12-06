@@ -33,10 +33,14 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
   mapContainer: {
-    width: "70vw",
+    width: "100vw",
     height: "100vh",
   },
   resultContainer: {
+    position: "absolute",
+    padding: theme.spacing(2),
+    right: 0,
+    zIndex: 1,
     width: "30vw",
     height: "100vh",
   },

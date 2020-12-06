@@ -6,6 +6,7 @@ import {
   Slider,
   Grid,
   Input,
+  Paper,
   makeStyles,
 } from "@material-ui/core";
 import PeopleIcon from "@material-ui/icons/People";
@@ -44,7 +45,11 @@ export default function ResultBox({ setChildrenMarkers, setColors }) {
     data.append("file", selectedFile);
     fetch("/api/testupload", {
       method: "POST",
-      body: data,
+      body: {
+        data: data,
+        friendshipValue: value,
+        classroomValue: classroomValue,
+      },
     });
     setFilename(null);
   };
@@ -104,107 +109,103 @@ export default function ResultBox({ setChildrenMarkers, setColors }) {
   };
 
   return (
-    <div className={classes.root}>
-      <Typography variant="h5" align="center">
-        Friendship Tracker
-      </Typography>
+    <Paper>
+      <div className={classes.root}>
+        <Typography variant="h5" align="center">
+          Carpool Planner
+        </Typography>
 
-      <div className={classes.fileContainer}>
-        <input
-          accept=".csv"
-          onChange={onUpload}
-          hidden
-          id="contained-button-file"
-          type="file"
-        />
+        <div className={classes.fileContainer}>
+          <input
+            accept=".csv"
+            onChange={onUpload}
+            hidden
+            id="contained-button-file"
+            type="file"
+          />
 
-        <label htmlFor="contained-button-file">
+          <label htmlFor="contained-button-file">
+            <Button
+              variant="contained"
+              color="primary"
+              component="span"
+              className={classes.uploadBtns}
+              endIcon={filename ? null : <FileIcon />}
+            >
+              {filename ? filename : "File"}
+            </Button>
+          </label>
+
           <Button
             variant="contained"
-            color="primary"
-            component="span"
+            color="secondary"
+            onClick={onSubmit}
             className={classes.uploadBtns}
-            endIcon={filename ? null : <FileIcon />}
+            endIcon={<UploadIcon />}
           >
-            {filename ? filename : "File"}
+            Upload
           </Button>
-        </label>
+        </div>
 
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={onSubmit}
-          className={classes.uploadBtns}
-          endIcon={<UploadIcon />}
-        >
-          Upload
-        </Button>
+        <div className={classes.sliderContainer}>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item>
+              <PeopleIcon />
+            </Grid>
+            <Grid item xs>
+              <Slider
+                value={typeof value === "number" ? value : 0}
+                onChange={handleSliderChange}
+                aria-labelledby="input-slider"
+              />
+            </Grid>
+            <Grid item>
+              <Input
+                className={classes.input}
+                value={value}
+                margin="dense"
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                inputProps={{
+                  step: 10,
+                  min: 0,
+                  max: 100,
+                  type: "number",
+                  "aria-labelledby": "input-slider",
+                }}
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item>
+              <ClassIcon />
+            </Grid>
+            <Grid item xs>
+              <Slider
+                value={typeof classroomValue === "number" ? classroomValue : 0}
+                onChange={handleSliderChangeC}
+                aria-labelledby="input-slider"
+              />
+            </Grid>
+            <Grid item>
+              <Input
+                className={classes.input}
+                value={classroomValue}
+                margin="dense"
+                onChange={handleInputChangeC}
+                onBlur={handleBlurC}
+                inputProps={{
+                  step: 10,
+                  min: 0,
+                  max: 100,
+                  type: "number",
+                  "aria-labelledby": "input-slider",
+                }}
+              />
+            </Grid>
+          </Grid>
+        </div>
       </div>
-
-      <div className={classes.sliderContainer}>
-        <Grid container spacing={2} alignItems="center">
-          <Grid item>
-            <PeopleIcon />
-          </Grid>
-          <Grid item xs>
-            <Slider
-              value={typeof value === "number" ? value : 0}
-              onChange={handleSliderChange}
-              aria-labelledby="input-slider"
-            />
-          </Grid>
-          <Grid item>
-            <Input
-              className={classes.input}
-              value={value}
-              margin="dense"
-              onChange={handleInputChange}
-              onBlur={handleBlur}
-              inputProps={{
-                step: 10,
-                min: 0,
-                max: 100,
-                type: "number",
-                "aria-labelledby": "input-slider",
-              }}
-            />
-          </Grid>
-        </Grid>
-        <Grid container spacing={2} alignItems="center">
-          <Grid item>
-            <ClassIcon />
-          </Grid>
-          <Grid item xs>
-            <Slider
-              value={typeof classroomValue === "number" ? classroomValue : 0}
-              onChange={handleSliderChangeC}
-              aria-labelledby="input-slider"
-            />
-          </Grid>
-          <Grid item>
-            <Input
-              className={classes.input}
-              value={classroomValue}
-              margin="dense"
-              onChange={handleInputChangeC}
-              onBlur={handleBlurC}
-              inputProps={{
-                step: 10,
-                min: 0,
-                max: 100,
-                type: "number",
-                "aria-labelledby": "input-slider",
-              }}
-            />
-          </Grid>
-        </Grid>
-      </div>
-
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <Button variant="contained" onClick={getAPIData}>
-          Click
-        </Button>
-      </div>
-    </div>
+    </Paper>
   );
 }

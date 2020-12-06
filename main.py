@@ -9,9 +9,18 @@ from sklearn.cluster import spectral_clustering
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def index():
     return 'index'
+
+
+@app.route('/api/testupload', methods=['POST'])
+def testupload():
+    print(123)
+    print(request.)
+    return jsonify(status='done')
+
 
 @app.route('/airquality', methods=['POST'])
 def airquality():
@@ -39,7 +48,7 @@ def test():
 def test2():
     latlng = get_coords(getAddresses())
     G = make_G(latlng)
-    G_prime = make_G_prime(getData(), G) # add 2 more vars for 2 sliders
+    G_prime = make_G_prime(getData(), G)  # add 2 more vars for 2 sliders
     W = make_W(G_prime)
     cluster = spectral_clustering(W, n_clusters=int(len(G_prime) / 3))
 
@@ -58,7 +67,9 @@ def test2():
 def test3():
     latlng = get_coords(getAddresses())
     G = make_G(latlng)
-    G_prime_prime = make_G_prime_prime(getData(), G, latlng, get_coords(['3812 Hillsboro Pike, Nashville, TN'])[0]) # add 2 more vars for 2 sliders and change the hardcoded address to the school address
+    # add 2 more vars for 2 sliders and change the hardcoded address to the school address
+    G_prime_prime = make_G_prime_prime(getData(), G, latlng, get_coords(
+        ['3812 Hillsboro Pike, Nashville, TN'])[0])
     W = make_W(G_prime_prime)
     cluster = spectral_clustering(W, n_clusters=int(len(G_prime_prime) / 3))
 
