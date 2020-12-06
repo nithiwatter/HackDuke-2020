@@ -44,11 +44,14 @@ def test():
     return 'done'
 
 
-@app.route('/api/test2')
+@app.route('/api/test2', methods=['POST'])
 def test2():
-    latlng = get_coords(getAddresses())
+    file = request.files['file']
+    f_slide = request.form.get("friendshipValue")
+    c_slide = request.form.get("classroomValue")
+    latlng = get_coords(getAddresses(file))
     G = make_G(latlng)
-    G_prime = make_G_prime(getData(), G)  # add 2 more vars for 2 sliders
+    G_prime = make_G_prime(getData(file), G, f_slide, c_slide) # add 2 more vars for 2 sliders
     W = make_W(G_prime)
     cluster = spectral_clustering(W, n_clusters=int(len(G_prime) / 3))
 
@@ -59,17 +62,18 @@ def test2():
             output[cluster[i].item()].append(latlng[i].tolist())
         else:
             output[cluster[i].item()] = [latlng[i].tolist()]
-
+    print(output)
     return output
 
 
-@app.route('/test3')
+@app.route('/api/test3', methods=['POST'])
 def test3():
-    latlng = get_coords(getAddresses())
+    file = request.files["file"]
+    f_slide = request.form.get("friendshipValue")
+    c_slide = request.form.get("classroomValue")
+    latlng = get_coords(getAddresses(file))
     G = make_G(latlng)
-    # add 2 more vars for 2 sliders and change the hardcoded address to the school address
-    G_prime_prime = make_G_prime_prime(getData(), G, latlng, get_coords(
-        ['3812 Hillsboro Pike, Nashville, TN'])[0])
+    G_prime_prime = make_G_prime_prime(getData(file), G, latlng, get_coords(['3812 Hillsboro Pike, Nashville, TN'])[0],f_slide,c_slide) # add 2 more vars for 2 sliders and change the hardcoded address to the school address
     W = make_W(G_prime_prime)
     cluster = spectral_clustering(W, n_clusters=int(len(G_prime_prime) / 3))
 
@@ -80,5 +84,11 @@ def test3():
             output[cluster[i].item()].append(latlng[i].tolist())
         else:
             output[cluster[i].item()] = [latlng[i].tolist()]
-
+    print(output)
     return output
+
+@app.route('/api/testupload', methods=['POST'])
+def testupload():
+    print(readFile(request.files["file"]))
+    print(request.form.get("classroomValue"))
+    return jsonify(status='done')
