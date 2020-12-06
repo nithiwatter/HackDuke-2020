@@ -69,6 +69,8 @@ export default function Map() {
   });
   const [myCenter, setMyCenter] = React.useState(center);
   const [markers, setMarkers] = React.useState([]);
+  const [childrenMarkers, setChildrenMarkers] = React.useState([]);
+  const [colors, setColors] = React.useState([]);
   const [selectedLocation, setSelectedLocation] = React.useState(null);
   const mapRef = React.useRef();
   const classes = useStyles();
@@ -167,6 +169,20 @@ export default function Map() {
                 }}
               />
             ))}
+            {childrenMarkers.map((marker) => {
+              if (marker.clusterNumber !== 1) return;
+              return (
+                <Marker
+                  icon={{
+                    path: window.google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                    strokeColor: colors[marker.clusterNumber].hex(),
+                    scale: 3,
+                  }}
+                  key={`${marker.lat}-${marker.lng}`}
+                  position={{ lat: marker.lat, lng: marker.lng }}
+                />
+              );
+            })}
             {selectedLocation ? (
               <InfoBox
                 position={{
@@ -187,7 +203,10 @@ export default function Map() {
           </GoogleMap>
         </div>
         <div className={classes.resultContainer}>
-          <ResultBox />
+          <ResultBox
+            setChildrenMarkers={setChildrenMarkers}
+            setColors={setColors}
+          />
         </div>
       </div>
     </MyMapContext.Provider>
