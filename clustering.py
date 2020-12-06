@@ -78,6 +78,8 @@ def make_G_prime_prime(students, G, lat_long, school):
                 G[i][j] = G[i][j] * angle
                 G[j][i] = G[i][j] * angle
 
+    return G
+
 
 # def make_W(G, alpha=1):
 #     W = np.exp(-np.power(G, 2) / alpha)

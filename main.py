@@ -9,11 +9,9 @@ from sklearn.cluster import spectral_clustering
 
 app = Flask(__name__)
 
-
 @app.route('/')
 def index():
     return 'index'
-
 
 @app.route('/airquality', methods=['POST'])
 def airquality():
@@ -40,7 +38,7 @@ def test2():
     G = make_G(latlng)
     G_prime = make_G_prime(getData(), G)
     cluster = spectral_clustering(G_prime, n_clusters=int(len(G_prime) / 3))
-    # print(cluster)
+
     output = dict()
 
     for i in range(len(cluster)):
@@ -49,4 +47,22 @@ def test2():
         else:
             output[cluster[i].item()] = [latlng[i].tolist()]
     
+    return output
+
+
+@app.route('/test3')
+def test3():
+    latlng = get_coords(getAddresses())
+    G = make_G(latlng)
+    G_prime_prime = make_G_prime_prime(getData(), G, latlng, get_coords(['3812 Hillsboro Pike, Nashville, TN'])[0])
+    cluster = spectral_clustering(G_prime_prime, n_clusters=int(len(G_prime_prime) / 3))
+
+    output = dict()
+
+    for i in range(len(cluster)):
+        if cluster[i] in output:
+            output[cluster[i].item()].append(latlng[i].tolist())
+        else:
+            output[cluster[i].item()] = [latlng[i].tolist()]
+
     return output
