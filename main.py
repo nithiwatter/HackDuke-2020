@@ -35,7 +35,6 @@ def test():
 def test2():
     G = make_G(get_coords(getAddresses()))
     G_prime = make_G_prime(getData(), G)
-    print(G_prime)
     W = make_W(G_prime)
     D = make_D(W)
     L = make_L(D, W)
