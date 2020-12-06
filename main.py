@@ -4,6 +4,8 @@ from test import get_aq, cost
 from clustering import *
 from parsingCSV import *
 
+from sklearn.cluster import spectral_clustering
+
 app = Flask(__name__)
 
 
@@ -35,17 +37,9 @@ def test():
 def test2():
     G = make_G(get_coords(getAddresses()))
     G_prime = make_G_prime(getData(), G)
-    W = make_W(G_prime)
-    D = make_D(W)
-    L = make_L(D, W)
-    print(make_clusters(L))
+
+    print(spectral_clustering(G_prime, n_clusters=int(len(G_prime) / 3)))
     return 'done'
-    # G = make_G(lat_long)
-    # G_prime = make_G_prime(students, G)
-    # print(G_prime)
-    # W = make_W(G_prime)
-    # D = make_D(W)
-    # L = make_L(D, W)
-    # print(make_clusters(L))
+
 
 # print("don't go outside")
