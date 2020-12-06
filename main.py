@@ -3,6 +3,9 @@ from routes import getRoutes
 from test import get_aq, cost
 from clustering import *
 from parsingCSV import *
+import json
+
+from sklearn.cluster import spectral_clustering
 
 app = Flask(__name__)
 
@@ -33,21 +36,17 @@ def test():
 
 @app.route('/test2')
 def test2():
-    print('start')
-    G = make_G(get_coords(getAddresses()))
+    latlng = get_coords(getAddresses())
+    G = make_G(latlng)
     G_prime = make_G_prime(getData(), G)
-    W = make_W(G_prime)
-    D = make_D(W)
-    L = make_L(D, W)
-    print('start making clusters')
-    print(make_clusters(L))
-    return 'done'
-    # G = make_G(lat_long)
-    # G_prime = make_G_prime(students, G)
-    # print(G_prime)
-    # W = make_W(G_prime)
-    # D = make_D(W)
-    # L = make_L(D, W)
-    # print(make_clusters(L))
+    cluster = spectral_clustering(G_prime, n_clusters=int(len(G_prime) / 3))
+    # print(cluster)
+    output = dict()
 
-# print("don't go outside")
+    for i in range(len(cluster)):
+        if cluster[i] in output:
+            output[cluster[i].item()].append(latlng[i].tolist())
+        else:
+            output[cluster[i].item()] = [latlng[i].tolist()]
+    
+    return output
