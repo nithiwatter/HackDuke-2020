@@ -28,6 +28,7 @@ def make_G_prime(students, G):
         count = count + 1
 
     for student in students:
+        print(student[2])
         G[id_dict[student[0]]][id_dict[student[1]]] = G[id_dict[student[0]]][id_dict[student[1]]] * 0.75
         G[id_dict[student[1]]][id_dict[student[0]]] = G[id_dict[student[0]]][id_dict[student[1]]] * 0.75
         G[id_dict[student[0]]][id_dict[student[2]]] = G[id_dict[student[0]]][id_dict[student[2]]] * 0.75
@@ -94,10 +95,10 @@ students = np.array([[1, 2, 3, 1],
                      [5, 2, 3, 2],
                      [6, 2, 4, 2]])
 
-G = make_G(lat_long)
-G_prime = make_G_prime(students, G)
-print(G_prime)
-W = make_W(G_prime)
-D = make_D(W)
-L = make_L(D, W)
-print(make_clusters(L))
+# G = make_G(lat_long)
+# G_prime = make_G_prime(students, G)
+# print(G_prime)
+# W = make_W(G_prime)
+# D = make_D(W)
+# L = make_L(D, W)
+# print(make_clusters(L))
