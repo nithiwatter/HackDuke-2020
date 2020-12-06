@@ -18,6 +18,24 @@ const useStyles = makeStyles((theme) => ({
 export default function ResultBox({ setChildrenMarkers, setColors }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(30);
+  const [selectedFile, setSelectedFile] = React.useState(null)
+  const [filename, setFilename] = React.useState(null)
+
+  const onUpload = (e) => {
+    console.log(e.target.files[0])
+    setSelectedFile(e.target.files[0])
+    setFilename(e.target.files[0].name)
+  }
+
+  const onSubmit = () => {
+    const data = new FormData()
+    data.append('file', selectedFile)
+    fetch('/api/testupload', {
+      method: 'POST',
+      body: data
+    })
+    setFilename(null)
+  }
 
   const handleSliderChange = (event, newValue) => {
     setValue(newValue);
@@ -62,6 +80,25 @@ export default function ResultBox({ setChildrenMarkers, setColors }) {
       <Typography variant="h5" align="center">
         Friendship Tracker
       </Typography>
+
+      <input
+        accept=".csv"
+        onChange={onUpload}
+        hidden
+        id="contained-button-file"
+        type="file"
+      />
+
+      <label htmlFor="contained-button-file">
+        <Button variant="contained" color="primary" component="span" className={classes.uploadBtns} endIcon={filename ? null :<FileIcon/>}>
+          {filename ? filename : 'File'}
+        </Button>
+      </label>
+
+      <Button variant="contained" color="secondary" onClick={onSubmit} className={classes.uploadBtns} endIcon={<UploadIcon/>}>
+          Upload
+      </Button>
+
       <Grid container spacing={2} alignItems="center">
         <Grid item>
           <PeopleIcon />
