@@ -9,21 +9,19 @@ import os
 load_dotenv()
 
 IQAIR_API_KEY = os.getenv("IQAIR_API_KEY")
+BREEZE_API = os.getenv("BREEZE_API")
 # from main import IQAIR_API_KEY
 
 def get_aq(lat, long):
     slat = str(lat)
     slong = str(long)
+    url = "https://api.breezometer.com/air-quality/v2/current-conditions?lat=" + slat + "&lon=" + slong + "&key=" + BREEZE_API
 
-    url = "http://api.airvisual.com/v2/nearest_city?lat=" + slat + "&lon=" + slong + "&key=" + IQAIR_API_KEY
     response = requests.get(url)
+    airqual = response.json()["data"]["indexes"]["baqi"]["aqi"]
 
-    if(response.json()["status"] == 'fail'):
-        return -1
+    return 100 - airqual
 
-    airqual = response.json()["data"]["current"]["pollution"]["aqius"]
-
-    return airqual
 
 def get_other_shit(lat, long):
     return 5
