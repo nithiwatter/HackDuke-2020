@@ -7,6 +7,7 @@ import {
 } from "@react-google-maps/api";
 import { makeStyles, CircularProgress } from "@material-ui/core";
 
+import ResultBox from "../ResultBox";
 import MyMapContext from "./MyMapContext";
 import SearchMap from "./search/SearchMap";
 import MyInfoBox from "./infobox/MyInfoBox";
@@ -33,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
   },
   mapContainer: {
     width: "70vw",
+    height: "100vh",
+  },
+  resultContainer: {
+    width: "30vw",
     height: "100vh",
   },
 }));
@@ -64,6 +69,8 @@ export default function Map() {
   });
   const [myCenter, setMyCenter] = React.useState(center);
   const [markers, setMarkers] = React.useState([]);
+  const [childrenMarkers, setChildrenMarkers] = React.useState([]);
+  const [colors, setColors] = React.useState([]);
   const [selectedLocation, setSelectedLocation] = React.useState(null);
   const mapRef = React.useRef();
   const classes = useStyles();
@@ -78,6 +85,11 @@ export default function Map() {
   };
 
   const handleSetMarker = (marker) => {
+    if (
+      markers.find((m) => m.lat === marker.lat && m.lng === marker.lng) !==
+      undefined
+    )
+      return;
     if (markers.length === 2)
       return openSnackbarExternal({
         severity: "error",
@@ -89,6 +101,11 @@ export default function Map() {
   };
 
   const handleSetCurrentLocationMarker = (marker) => {
+    if (
+      markers.find((m) => m.lat === marker.lat && m.lng === marker.lng) !==
+      undefined
+    )
+      return;
     if (markers.length === 2)
       return openSnackbarExternal({
         severity: "error",
@@ -118,6 +135,7 @@ export default function Map() {
   return (
     <MyMapContext.Provider
       value={{
+        markers,
         setMarkers,
         handleSetMarker,
         myCenter,
@@ -142,9 +160,29 @@ export default function Map() {
               <Marker
                 key={`${marker.lat}-${marker.lng}`}
                 position={{ lat: marker.lat, lng: marker.lng }}
-                onMouseOver={() => setSelectedLocation(marker)}
+                onMouseOver={() => {
+                  if (selectedLocation === marker) return;
+                  if (selectedLocation !== null) {
+                    setSelectedLocation(null);
+                  }
+                  setSelectedLocation(marker);
+                }}
               />
             ))}
+            {childrenMarkers.map((marker) => {
+              if (marker.clusterNumber !== 1) return;
+              return (
+                <Marker
+                  icon={{
+                    path: window.google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                    strokeColor: colors[marker.clusterNumber].hex(),
+                    scale: 3,
+                  }}
+                  key={`${marker.lat}-${marker.lng}`}
+                  position={{ lat: marker.lat, lng: marker.lng }}
+                />
+              );
+            })}
             {selectedLocation ? (
               <InfoBox
                 position={{
@@ -163,6 +201,12 @@ export default function Map() {
               </InfoBox>
             ) : null}
           </GoogleMap>
+        </div>
+        <div className={classes.resultContainer}>
+          <ResultBox
+            setChildrenMarkers={setChildrenMarkers}
+            setColors={setColors}
+          />
         </div>
       </div>
     </MyMapContext.Provider>

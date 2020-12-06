@@ -22,17 +22,20 @@ def airquality():
     costs = cost(latlng, [get_aq], [1])
     return jsonify(route=latlng[costs])
 
+
 @app.route('/test')
 def test():
     #montreal/ontario - 'ChIJpTvG15DL1IkRd8S0KlBVNTI','ChIJDbdkHFQayUwR7-8fITgxTmU'
     #duke/unc - 'ChIJfzLrAbLmrIkRjaMc7lUWH7I','ChIJ66oXy9LCrIkR4OCXZJfwO7M'
-    latlng = getRoutes('ChIJ66_O8Ra35YgR4sf8ljh9zcQ','ChIJd7zN_thz54gRnr-lPAaywwo')
-    #print(latlng)
-    costs = cost(latlng,[get_aq],[1])
+    latlng = getRoutes('ChIJ66_O8Ra35YgR4sf8ljh9zcQ',
+                       'ChIJd7zN_thz54gRnr-lPAaywwo')
+    # print(latlng)
+    costs = cost(latlng, [get_aq], [1])
     print(costs)
     return 'done'
 
-@app.route('/test2')
+
+@app.route('/api/test2')
 def test2():
     latlng = get_coords(getAddresses())
     G = make_G(latlng)
@@ -46,7 +49,7 @@ def test2():
             output[cluster[i].item()].append(latlng[i].tolist())
         else:
             output[cluster[i].item()] = [latlng[i].tolist()]
-    
+
     return output
 
 
