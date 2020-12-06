@@ -1,4 +1,5 @@
 import numpy as np
+import requests
 import os
 
 MAPS_API_KEY = os.getenv("MAPS_API_KEY")
