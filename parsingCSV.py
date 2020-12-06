@@ -7,6 +7,7 @@ MAPS_API_KEY = os.getenv("MAPS_API_KEY")
 def readFile(csvFile):
     data = np.genfromtxt(csvFile,dtype='U',delimiter=',',skip_header=1)
     print(data)
+    
 
 def getAddresses(csvFile):
     data = np.genfromtxt(csvFile,dtype='U',delimiter=',',skip_header=1)

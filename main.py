@@ -14,14 +14,6 @@ app = Flask(__name__)
 def index():
     return 'index'
 
-
-@app.route('/api/testupload', methods=['POST'])
-def testupload():
-    print(123)
-    print(request.)
-    return jsonify(status='done')
-
-
 @app.route('/airquality', methods=['POST'])
 def airquality():
     req = request.get_json(force=True)
@@ -71,9 +63,19 @@ def test3():
     file = request.files["file"]
     f_slide = request.form.get("friendshipValue")
     c_slide = request.form.get("classroomValue")
-    latlng = get_coords(getAddresses(file))
+    students = getData(file)
+    file.stream.seek(0)
+    latlng = get_coords(getAddresses(request.files["file"]))
+    # print("latlng:{}".format(latlng))
+    
+    # print("student:{}".format(students))
+
+    # print("f:{}".format(f_slide))
+
+    # print("c:{}".format(c_slide))
+
     G = make_G(latlng)
-    G_prime_prime = make_G_prime_prime(getData(file), G, latlng, get_coords(['3812 Hillsboro Pike, Nashville, TN'])[0],f_slide,c_slide) # add 2 more vars for 2 sliders and change the hardcoded address to the school address
+    G_prime_prime = make_G_prime_prime(students, G, latlng, get_coords(['3812 Hillsboro Pike, Nashville, TN'])[0],float(f_slide),float(c_slide)) # add 2 more vars for 2 sliders and change the hardcoded address to the school address
     W = make_W(G_prime_prime)
     cluster = spectral_clustering(W, n_clusters=int(len(G_prime_prime) / 3))
 
@@ -84,11 +86,12 @@ def test3():
             output[cluster[i].item()].append(latlng[i].tolist())
         else:
             output[cluster[i].item()] = [latlng[i].tolist()]
-    print(output)
+
     return output
 
 @app.route('/api/testupload', methods=['POST'])
 def testupload():
-    print(readFile(request.files["file"]))
-    print(request.form.get("classroomValue"))
+    file = request.files['file']
+    print(getAddresses(file))
+    # print(request.form.get("classroomValue"))
     return jsonify(status='done')

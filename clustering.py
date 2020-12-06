@@ -33,7 +33,6 @@ def make_G_prime(students, G, f_slide, c_slide):
         count = count + 1
 
     for student in students:
-        print(student[2])
         G[id_dict[student[0]]][id_dict[student[1]]] = G[id_dict[student[0]]
                                                         ][id_dict[student[1]]] * (1.0 - f_slide)
         G[id_dict[student[1]]][id_dict[student[0]]] = G[id_dict[student[0]]
@@ -63,7 +62,6 @@ def make_G_prime_prime(students, G, lat_long, school, f_slide, c_slide):
         count = count + 1
 
     for student in students:
-        print(student[2])
         G[id_dict[student[0]]][id_dict[student[1]]] = G[id_dict[student[0]]
                                                         ][id_dict[student[1]]] * (1.0 - f_slide)
         G[id_dict[student[1]]][id_dict[student[0]]] = G[id_dict[student[0]]

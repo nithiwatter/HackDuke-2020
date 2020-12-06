@@ -35,7 +35,7 @@ export default function ResultBox({ setChildrenMarkers, setColors }) {
   const [filename, setFilename] = React.useState(null);
 
   const onUpload = (e) => {
-    console.log(e.target.files[0]);
+    // console.log(e.target.files[0]);
     setSelectedFile(e.target.files[0]);
     setFilename(e.target.files[0].name);
   };
@@ -43,15 +43,31 @@ export default function ResultBox({ setChildrenMarkers, setColors }) {
   const onSubmit = () => {
     const data = new FormData();
     data.append("file", selectedFile);
-    fetch("/api/testupload", {
-      method: "POST",
-      body: {
-        data: data,
-        friendshipValue: value,
-        classroomValue: classroomValue,
-      },
-    });
+    data.append("classroomValue", classroomValue)
+    data.append("friendshipValue",value)
     setFilename(null);
+    fetch("/api/test3", {
+      method: "POST",
+      body: data
+    }).then((res)=>{
+      console.log(res)
+      const childrenMarkers = [];
+      var totalClusters = 0;
+      for (const clusterNumber in res) {
+        totalClusters += 1;
+        for (const student of res[clusterNumber]) {
+          childrenMarkers.push({
+            lat: student[0],
+            lng: student[1],
+            clusterNumber: parseInt(clusterNumber),
+          });
+        }
+      }
+      console.log(res);
+      setColors(distinctColors({ count: totalClusters, quality: totalClusters }));
+      setChildrenMarkers(childrenMarkers);
+    });
+    
   };
 
   const handleSliderChange = (event, newValue) => {
@@ -108,6 +124,17 @@ export default function ResultBox({ setChildrenMarkers, setColors }) {
     setChildrenMarkers(childrenMarkers);
   };
 
+  const testUpload = () => {
+    const data = new FormData();
+    data.append("file", selectedFile);
+    data.append("classroomValue", classroomValue)
+    data.append("friendshipValue",value)
+    setFilename(null);
+    fetch('/api/testupload', {
+      method: 'POST',
+      body: data
+    })
+  }
   return (
     <Paper>
       <div className={classes.root}>
