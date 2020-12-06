@@ -7,6 +7,7 @@ import {
   Grid,
   Input,
   Paper,
+  CircularProgress,
   makeStyles,
 } from "@material-ui/core";
 import PeopleIcon from "@material-ui/icons/People";
@@ -33,6 +34,7 @@ export default function ResultBox({ setChildrenMarkers, setColors }) {
   const [classroomValue, setClassroomValue] = React.useState(0);
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [filename, setFilename] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
 
   const onUpload = (e) => {
     // console.log(e.target.files[0]);
@@ -43,31 +45,35 @@ export default function ResultBox({ setChildrenMarkers, setColors }) {
   const onSubmit = () => {
     const data = new FormData();
     data.append("file", selectedFile);
-    data.append("classroomValue", classroomValue)
-    data.append("friendshipValue",value)
+    data.append("classroomValue", classroomValue);
+    data.append("friendshipValue", value);
     setFilename(null);
+    setLoading(true);
     fetch("/api/test3", {
       method: "POST",
-      body: data
-    }).then((res)=>{
-      console.log(res)
+      body: data,
+    }).then(async (res) => {
+      const data = await res.json();
+      setLoading(false);
+      console.log(data);
+
       const childrenMarkers = [];
       var totalClusters = 0;
-      for (const clusterNumber in res) {
-        totalClusters += 1;
-        for (const student of res[clusterNumber]) {
+      for (const clusterNumber in data) {
+        for (const student of data[clusterNumber]) {
           childrenMarkers.push({
             lat: student[0],
             lng: student[1],
-            clusterNumber: parseInt(clusterNumber),
+            clusterNumber: totalClusters,
           });
         }
+        totalClusters += 1;
       }
-      console.log(res);
-      setColors(distinctColors({ count: totalClusters, quality: totalClusters }));
+      setColors(
+        distinctColors({ count: totalClusters, quality: totalClusters })
+      );
       setChildrenMarkers(childrenMarkers);
     });
-    
   };
 
   const handleSliderChange = (event, newValue) => {
@@ -120,21 +126,28 @@ export default function ResultBox({ setChildrenMarkers, setColors }) {
       }
     }
     console.log(data);
-    setColors(distinctColors({ count: totalClusters, quality: totalClusters }));
+    setColors(
+      distinctColors({
+        count: totalClusters * 2,
+        quality: totalClusters,
+        hueMin: 50,
+        lightMin: 50,
+      })
+    );
     setChildrenMarkers(childrenMarkers);
   };
 
   const testUpload = () => {
     const data = new FormData();
     data.append("file", selectedFile);
-    data.append("classroomValue", classroomValue)
-    data.append("friendshipValue",value)
+    data.append("classroomValue", classroomValue);
+    data.append("friendshipValue", value);
     setFilename(null);
-    fetch('/api/testupload', {
-      method: 'POST',
-      body: data
-    })
-  }
+    fetch("/api/testupload", {
+      method: "POST",
+      body: data,
+    });
+  };
   return (
     <Paper>
       <div className={classes.root}>
@@ -232,6 +245,17 @@ export default function ResultBox({ setChildrenMarkers, setColors }) {
             </Grid>
           </Grid>
         </div>
+        {loading ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "12px",
+            }}
+          >
+            <CircularProgress />
+          </div>
+        ) : null}
       </div>
     </Paper>
   );

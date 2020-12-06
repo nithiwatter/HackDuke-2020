@@ -108,6 +108,7 @@ export default function SearchMapInputBase({
           onClick={() => {
             functionUtils.setMarkers([]);
             functionUtils.setSelectedLocation(null);
+            functionUtils.setChildrenMarkers([]);
           }}
         >
           <DeleteSweepIcon />

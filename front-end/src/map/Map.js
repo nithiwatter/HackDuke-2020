@@ -146,6 +146,7 @@ export default function Map() {
         handleSetCurrentLocationMarker,
         setSelectedLocation,
         handleDeleteMarker,
+        setChildrenMarkers,
       }}
     >
       <div className={classes.root}>
@@ -174,7 +175,8 @@ export default function Map() {
               />
             ))}
             {childrenMarkers.map((marker) => {
-              // if (marker.clusterNumber !== 0) return;
+              // console.log(colors);
+              // console.log(childrenMarkers);
               return (
                 <Marker
                   icon={{
