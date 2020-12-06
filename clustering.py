@@ -3,6 +3,7 @@ import numpy as np
 from scipy.sparse.linalg import eigs
 from scipy.linalg import eig
 from haversine import haversine
+from math import *
 
 
 
@@ -44,6 +45,39 @@ def make_G_prime(students, G):
                 G[j][i] = G[i][j] * 0.75
 
     return G
+
+def make_G_prime_prime(students, G, lat_long, school):
+    id_dict = {}
+    class_dict = {}
+
+    count = 0
+    for student in students:
+        id_dict[student[0]] = count
+        class_dict[count] = student[3]
+        count = count + 1
+
+    for student in students:
+        print(student[2])
+        G[id_dict[student[0]]][id_dict[student[1]]] = G[id_dict[student[0]]][id_dict[student[1]]] * 0.75
+        G[id_dict[student[1]]][id_dict[student[0]]] = G[id_dict[student[0]]][id_dict[student[1]]] * 0.75
+        G[id_dict[student[0]]][id_dict[student[2]]] = G[id_dict[student[0]]][id_dict[student[2]]] * 0.75
+        G[id_dict[student[2]]][id_dict[student[0]]] = G[id_dict[student[0]]][id_dict[student[2]]] * 0.75
+
+    for i in range(len(G)):
+        for j in range(i + 1, len(G)):
+            if class_dict[i] == class_dict[j]:
+                G[i][j] = G[i][j] * 0.75
+                G[j][i] = G[i][j] * 0.75
+
+                a = distance(lat_long[i], school) # school to i
+                b = distance(lat_long[j], school) # school to j
+                c = distance(lat_long[i], lat_long[j]) # i to j
+
+                angle = np.arccos((np.power(a, 2) + np.power(b, 2) - np.power(c, 2)) / (2 * a * b)) * 180 / np.pi
+
+                G[i][j] = G[i][j] * angle
+                G[j][i] = G[i][j] * angle
+
 
 # def make_W(G, alpha=1):
 #     W = np.exp(-np.power(G, 2) / alpha)
