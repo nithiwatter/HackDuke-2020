@@ -3,10 +3,13 @@ import requests
 import os
 
 MAPS_API_KEY = os.getenv("MAPS_API_KEY")
-data = np.genfromtxt('example_data.csv',dtype='U',delimiter=',',skip_header=1)
-# print(data)
 
-def getAddresses():
+def readFile(csvFile):
+    data = np.genfromtxt(csvFile,dtype='U',delimiter=',',skip_header=1)
+    print(data)
+
+def getAddresses(csvFile):
+    data = np.genfromtxt(csvFile,dtype='U',delimiter=',',skip_header=1)
     addresses = []
     for i in range(len(data)):
         addresses.append(data[i][1])
@@ -14,7 +17,8 @@ def getAddresses():
 
 #print(addresses)
 
-def getData():
+def getData(csvFile):
+    data = np.genfromtxt(csvFile,dtype='U',delimiter=',',skip_header=1)
     output = np.zeros((len(data),4))
     for j in range(len(data)):
         output[j]=[data[j][0], data[j][3], data[j][4], data[j][2]]
