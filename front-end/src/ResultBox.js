@@ -9,6 +9,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import PeopleIcon from "@material-ui/icons/People";
+import ClassIcon from "@material-ui/icons/Class";
 import distinctColors from "distinct-colors";
 
 const useStyles = makeStyles((theme) => ({
@@ -17,14 +18,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ResultBox({ setChildrenMarkers, setColors }) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(30);
+  const [value, setValue] = React.useState(0);
+  const [classroomValue, setClassroomValue] = React.useState(0);
 
   const handleSliderChange = (event, newValue) => {
     setValue(newValue);
   };
+  const handleSliderChangeC = (event, newValue) => {
+    setClassroomValue(newValue);
+  };
 
   const handleInputChange = (event) => {
     setValue(event.target.value === "" ? "" : Number(event.target.value));
+  };
+
+  const handleInputChangeC = (event) => {
+    setClassroomValue(
+      event.target.value === "" ? "" : Number(event.target.value)
+    );
   };
 
   const handleBlur = () => {
@@ -32,6 +43,13 @@ export default function ResultBox({ setChildrenMarkers, setColors }) {
       setValue(0);
     } else if (value > 100) {
       setValue(100);
+    }
+  };
+  const handleBlurC = () => {
+    if (value < 0) {
+      setClassroomValue(0);
+    } else if (value > 100) {
+      setClassroomValue(100);
     }
   };
 
@@ -80,6 +98,34 @@ export default function ResultBox({ setChildrenMarkers, setColors }) {
             margin="dense"
             onChange={handleInputChange}
             onBlur={handleBlur}
+            inputProps={{
+              step: 10,
+              min: 0,
+              max: 100,
+              type: "number",
+              "aria-labelledby": "input-slider",
+            }}
+          />
+        </Grid>
+      </Grid>
+      <Grid container spacing={2} alignItems="center">
+        <Grid item>
+          <ClassIcon />
+        </Grid>
+        <Grid item xs>
+          <Slider
+            value={typeof classroomValue === "number" ? classroomValue : 0}
+            onChange={handleSliderChangeC}
+            aria-labelledby="input-slider"
+          />
+        </Grid>
+        <Grid item>
+          <Input
+            className={classes.input}
+            value={classroomValue}
+            margin="dense"
+            onChange={handleInputChangeC}
+            onBlur={handleBlurC}
             inputProps={{
               step: 10,
               min: 0,
