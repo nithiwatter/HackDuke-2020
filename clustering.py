@@ -22,7 +22,7 @@ def make_G(lat_long):
     return G
 
 
-def make_G_prime(students, G):
+def make_G_prime(students, G, f_slide, c_slide):
     id_dict = {}
     class_dict = {}
 
@@ -34,6 +34,7 @@ def make_G_prime(students, G):
 
     for student in students:
         print(student[2])
+<<<<<<< HEAD
         G[id_dict[student[0]]][id_dict[student[1]]
                                ] = G[id_dict[student[0]]][id_dict[student[1]]] * 0.5
         G[id_dict[student[1]]][id_dict[student[0]]
@@ -42,17 +43,28 @@ def make_G_prime(students, G):
                                ] = G[id_dict[student[0]]][id_dict[student[2]]] * 0.5
         G[id_dict[student[2]]][id_dict[student[0]]
                                ] = G[id_dict[student[0]]][id_dict[student[2]]] * 0.5
+=======
+        G[id_dict[student[0]]][id_dict[student[1]]] = G[id_dict[student[0]]][id_dict[student[1]]] * (1.0 - f_slide)
+        G[id_dict[student[1]]][id_dict[student[0]]] = G[id_dict[student[0]]][id_dict[student[1]]] * (1.0 - f_slide)
+        G[id_dict[student[0]]][id_dict[student[2]]] = G[id_dict[student[0]]][id_dict[student[2]]] * (1.0 - f_slide)
+        G[id_dict[student[2]]][id_dict[student[0]]] = G[id_dict[student[0]]][id_dict[student[2]]] * (1.0 - f_slide)
+>>>>>>> ca677a7ea02c0cac0b0ab6a52dfb63c6b88f0a39
 
     for i in range(len(G)):
         for j in range(i + 1, len(G)):
             if class_dict[i] == class_dict[j]:
+<<<<<<< HEAD
                 G[i][j] = G[i][j] * 0.5
                 G[j][i] = G[i][j] * 0.5
+=======
+                G[i][j] = G[i][j] * (1 - c_slide)
+                G[j][i] = G[i][j] * (1 - c_slide)
+>>>>>>> ca677a7ea02c0cac0b0ab6a52dfb63c6b88f0a39
 
     return G
 
 
-def make_G_prime_prime(students, G, lat_long, school):
+def make_G_prime_prime(students, G, lat_long, school, f_slide, c_slide):
     id_dict = {}
     class_dict = {}
 
@@ -64,20 +76,16 @@ def make_G_prime_prime(students, G, lat_long, school):
 
     for student in students:
         print(student[2])
-        G[id_dict[student[0]]][id_dict[student[1]]
-                               ] = G[id_dict[student[0]]][id_dict[student[1]]] * 1
-        G[id_dict[student[1]]][id_dict[student[0]]
-                               ] = G[id_dict[student[0]]][id_dict[student[1]]] * 1
-        G[id_dict[student[0]]][id_dict[student[2]]
-                               ] = G[id_dict[student[0]]][id_dict[student[2]]] * 1
-        G[id_dict[student[2]]][id_dict[student[0]]
-                               ] = G[id_dict[student[0]]][id_dict[student[2]]] * 1
+        G[id_dict[student[0]]][id_dict[student[1]]] = G[id_dict[student[0]]][id_dict[student[1]]] * (1.0 - f_slide)
+        G[id_dict[student[1]]][id_dict[student[0]]] = G[id_dict[student[0]]][id_dict[student[1]]] * (1.0 - f_slide)
+        G[id_dict[student[0]]][id_dict[student[2]]] = G[id_dict[student[0]]][id_dict[student[2]]] * (1.0 - f_slide)
+        G[id_dict[student[2]]][id_dict[student[0]]] = G[id_dict[student[0]]][id_dict[student[2]]] * (1.0 - f_slide)
 
     for i in range(len(G)):
         for j in range(i + 1, len(G)):
             if class_dict[i] == class_dict[j]:
-                G[i][j] = G[i][j] * 0.75
-                G[j][i] = G[i][j] * 0.75
+                G[i][j] = G[i][j] * (1 - c_slide)
+                G[j][i] = G[i][j] * (1 - c_slide)
 
                 a = distance(lat_long[i], school)  # school to i
                 b = distance(lat_long[j], school)  # school to j
