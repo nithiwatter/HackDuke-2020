@@ -7,6 +7,7 @@ import {
 } from "@react-google-maps/api";
 import { makeStyles, CircularProgress } from "@material-ui/core";
 
+import ResultBox from "../ResultBox";
 import MyMapContext from "./MyMapContext";
 import SearchMap from "./search/SearchMap";
 import MyInfoBox from "./infobox/MyInfoBox";
@@ -33,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
   },
   mapContainer: {
     width: "70vw",
+    height: "100vh",
+  },
+  resultContainer: {
+    width: "30vw",
     height: "100vh",
   },
 }));
@@ -180,6 +185,9 @@ export default function Map() {
               </InfoBox>
             ) : null}
           </GoogleMap>
+        </div>
+        <div className={classes.resultContainer}>
+          <ResultBox />
         </div>
       </div>
     </MyMapContext.Provider>
