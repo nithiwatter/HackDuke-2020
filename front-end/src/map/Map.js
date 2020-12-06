@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     zIndex: 1,
     width: "30vw",
-    height: "100vh",
   },
 }));
 
@@ -65,6 +64,51 @@ const center = {
   lat: 36.0014,
   lng: -78.9382,
 };
+
+const COLORS = [
+  "#00ffff",
+  "#f0ffff",
+  "#f5f5dc",
+  "#000000",
+  "#0000ff",
+  "#a52a2a",
+  "#00ffff",
+  "#008b8b",
+  "#a9a9a9",
+  "#006400",
+  "#bdb76b",
+  "#8b008b",
+  "#556b2f",
+  "#ff8c00",
+  "#9932cc",
+  "#8b0000",
+  "#e9967a",
+  "#9400d3",
+  "#ff00ff",
+  "#ffd700",
+  "#008000",
+  "#4b0082",
+  "#f0e68c",
+  "#add8e6",
+  "#e0ffff",
+  "#90ee90",
+  "#d3d3d3",
+  "#ffb6c1",
+  "#ffffe0",
+  "#00ff00",
+  "#ff00ff",
+  "#800000",
+  "#000080",
+  "#808000",
+  "#ffa500",
+  "#ffc0cb",
+  "#800080",
+  "#800080",
+  "#ff0000",
+  "#c0c0c0",
+  "#ffffff",
+  "#ffff00",
+];
 
 export default function Map() {
   const { isLoaded, loadError } = useLoadScript({
@@ -182,7 +226,7 @@ export default function Map() {
                   icon={{
                     path: window.google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                     strokeColor: colors[marker.clusterNumber].hex(),
-                    scale: 3,
+                    scale: 4,
                   }}
                   key={`${marker.lat}-${marker.lng}`}
                   position={{ lat: marker.lat, lng: marker.lng }}

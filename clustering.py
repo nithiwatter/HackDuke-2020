@@ -81,9 +81,10 @@ def make_G_prime_prime(students, G, lat_long, school, f_slide, c_slide):
                 b = distance(lat_long[j], school)  # school to j
                 c = distance(lat_long[i], lat_long[j])  # i to j
 
-                angle = np.arccos(
-                    (np.power(a, 2) + np.power(b, 2) - np.power(c, 2)) / (2 * a * b)) * 180 / np.pi
+                # angle = np.arccos(
+                #     (np.power(a, 2) + np.power(b, 2) - np.power(c, 2)) / (2 * a * b)) * 180 / np.pi
 
+                angle = 1
                 G[i][j] = G[i][j] * angle
                 G[j][i] = G[i][j] * angle
 
