@@ -16,6 +16,14 @@ import distinctColors from "distinct-colors";
 
 const useStyles = makeStyles((theme) => ({
   root: { padding: theme.spacing(2), width: "100%" },
+  fileContainer: {
+    display: "flex",
+    justifyContent: "space-evenly",
+    margin: theme.spacing(2),
+  },
+  sliderContainer: {
+    margin: theme.spacing(2),
+  },
 }));
 
 export default function ResultBox({ setChildrenMarkers, setColors }) {
@@ -101,92 +109,97 @@ export default function ResultBox({ setChildrenMarkers, setColors }) {
         Friendship Tracker
       </Typography>
 
-      <input
-        accept=".csv"
-        onChange={onUpload}
-        hidden
-        id="contained-button-file"
-        type="file"
-      />
+      <div className={classes.fileContainer}>
+        <input
+          accept=".csv"
+          onChange={onUpload}
+          hidden
+          id="contained-button-file"
+          type="file"
+        />
 
-      <label htmlFor="contained-button-file">
+        <label htmlFor="contained-button-file">
+          <Button
+            variant="contained"
+            color="primary"
+            component="span"
+            className={classes.uploadBtns}
+            endIcon={filename ? null : <FileIcon />}
+          >
+            {filename ? filename : "File"}
+          </Button>
+        </label>
+
         <Button
           variant="contained"
-          color="primary"
-          component="span"
+          color="secondary"
+          onClick={onSubmit}
           className={classes.uploadBtns}
-          endIcon={filename ? null : <FileIcon />}
+          endIcon={<UploadIcon />}
         >
-          {filename ? filename : "File"}
+          Upload
         </Button>
-      </label>
+      </div>
 
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={onSubmit}
-        className={classes.uploadBtns}
-        endIcon={<UploadIcon />}
-      >
-        Upload
-      </Button>
+      <div className={classes.sliderContainer}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item>
+            <PeopleIcon />
+          </Grid>
+          <Grid item xs>
+            <Slider
+              value={typeof value === "number" ? value : 0}
+              onChange={handleSliderChange}
+              aria-labelledby="input-slider"
+            />
+          </Grid>
+          <Grid item>
+            <Input
+              className={classes.input}
+              value={value}
+              margin="dense"
+              onChange={handleInputChange}
+              onBlur={handleBlur}
+              inputProps={{
+                step: 10,
+                min: 0,
+                max: 100,
+                type: "number",
+                "aria-labelledby": "input-slider",
+              }}
+            />
+          </Grid>
+        </Grid>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item>
+            <ClassIcon />
+          </Grid>
+          <Grid item xs>
+            <Slider
+              value={typeof classroomValue === "number" ? classroomValue : 0}
+              onChange={handleSliderChangeC}
+              aria-labelledby="input-slider"
+            />
+          </Grid>
+          <Grid item>
+            <Input
+              className={classes.input}
+              value={classroomValue}
+              margin="dense"
+              onChange={handleInputChangeC}
+              onBlur={handleBlurC}
+              inputProps={{
+                step: 10,
+                min: 0,
+                max: 100,
+                type: "number",
+                "aria-labelledby": "input-slider",
+              }}
+            />
+          </Grid>
+        </Grid>
+      </div>
 
-      <Grid container spacing={2} alignItems="center">
-        <Grid item>
-          <PeopleIcon />
-        </Grid>
-        <Grid item xs>
-          <Slider
-            value={typeof value === "number" ? value : 0}
-            onChange={handleSliderChange}
-            aria-labelledby="input-slider"
-          />
-        </Grid>
-        <Grid item>
-          <Input
-            className={classes.input}
-            value={value}
-            margin="dense"
-            onChange={handleInputChange}
-            onBlur={handleBlur}
-            inputProps={{
-              step: 10,
-              min: 0,
-              max: 100,
-              type: "number",
-              "aria-labelledby": "input-slider",
-            }}
-          />
-        </Grid>
-      </Grid>
-      <Grid container spacing={2} alignItems="center">
-        <Grid item>
-          <ClassIcon />
-        </Grid>
-        <Grid item xs>
-          <Slider
-            value={typeof classroomValue === "number" ? classroomValue : 0}
-            onChange={handleSliderChangeC}
-            aria-labelledby="input-slider"
-          />
-        </Grid>
-        <Grid item>
-          <Input
-            className={classes.input}
-            value={classroomValue}
-            margin="dense"
-            onChange={handleInputChangeC}
-            onBlur={handleBlurC}
-            inputProps={{
-              step: 10,
-              min: 0,
-              max: 100,
-              type: "number",
-              "aria-labelledby": "input-slider",
-            }}
-          />
-        </Grid>
-      </Grid>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Button variant="contained" onClick={getAPIData}>
           Click
