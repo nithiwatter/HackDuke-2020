@@ -170,7 +170,7 @@ export default function Map() {
               />
             ))}
             {childrenMarkers.map((marker) => {
-              if (marker.clusterNumber !== 1) return;
+              // if (marker.clusterNumber !== 0) return;
               return (
                 <Marker
                   icon={{
